@@ -1,5 +1,8 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 
 //Routers
 const { usersRouter } = require('./routes/users.routes');
@@ -25,6 +28,19 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
+//Add security headers
+app.use(helmet());
+
+//compress responses
+app.use(compression());
+
+//log incoming request
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
+}
 
 //define endpoints
 
