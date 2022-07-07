@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 
-//Connect to data base
+//https
 const db = new Sequelize({
   dialect: 'postgres',
   host: process.env.DB_HOST,
@@ -12,6 +12,15 @@ const db = new Sequelize({
   database: process.env.DB,
   /* para dejar de ver tantos logs en la consola */
   logging: false,
+  dialectOptions:
+    process.env.NODE_ENV === 'production'
+      ? {
+          ssl: {
+            required: true,
+            rejectUnauthorized: false,
+          },
+        }
+      : {},
 });
 
 module.exports = { db, DataTypes };

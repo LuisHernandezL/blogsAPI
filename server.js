@@ -28,7 +28,9 @@ db.sync()
   .then(() => console.log('database sync'))
   .catch((err) => console.log(err));
 
+const PORT = process.env.PORT || 4000;
+
 //listen de express se le pasa el puerto y un callback que se ejecuta cuando el servidor se ejecuta
-app.listen(4000, () => {
+app.listen(PORT, () => {
   console.log('express app running!');
 });
