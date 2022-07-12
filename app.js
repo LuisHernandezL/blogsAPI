@@ -3,11 +3,13 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
+const path = require('path');
 
 //Routers
 const { usersRouter } = require('./routes/users.routes');
 const { postsRouter } = require('./routes/posts.routes');
 const { commentsRouter } = require('./routes/comments.routes');
+const { viewsRouter } = require('./routes/views.routes');
 
 //Global error controller
 const { globalErrorHandler } = require('./controllers/error.controller');
@@ -19,6 +21,13 @@ const app = express();
 
 //enable incoming json
 app.use(express.json());
+
+//set template engine
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+//Serving static files
+app.use(express.static(path.join(__dirname + '/public')));
 
 //limit the number of request
 const limiter = rateLimit({
@@ -43,6 +52,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //define endpoints
+
+app.use('/', viewsRouter);
 
 //http://localhost:4000/ap1/v1/users
 app.use('/api/v1/users', usersRouter); //next(error)
