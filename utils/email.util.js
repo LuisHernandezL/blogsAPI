@@ -13,7 +13,7 @@ class Email {
 
   //connect to mail service
   newTransport() {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'production') {
       //connect to sendgrid
       return nodemailer.createTransport({
         service: 'SendGrid',
